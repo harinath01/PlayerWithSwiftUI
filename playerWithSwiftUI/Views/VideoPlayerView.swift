@@ -26,10 +26,10 @@ class VideoPlayerUIView: UIView {
         self.videoId = videoId
         self.accessToken = accessToken
         self.backgroundColor = .black
-        self.initPlayer()
+        self.configurePlayerWithVideo()
     }
     
-    private func initPlayer(){
+    private func configurePlayerWithVideo(){
         StreamsAPIClient.fetchVideo(orgCode: orgCode, videoId: videoId, accessToken: accessToken){ videoDetails, error in
             if let videoDetails = videoDetails {
                 self.setupPlayer(with: videoDetails.playbackURL)
