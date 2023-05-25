@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ControlsView: View {
     @State private var showControls = false
+    @State private var hideTimer: Timer?
     
     var body: some View {
         VStack() {
@@ -20,16 +21,19 @@ struct ControlsView: View {
                         Image("rewind")
                             .resizable()
                             .frame(width: 40, height: 40)
+                            .brightness(-0.2)
                     }
                     Button(action: playPauseTapped) {
                         Image("play")
                             .resizable()
                             .frame(width: 50, height: 50)
+                            .brightness(-0.1)
                     }
                     Button(action: forward) {
                         Image("forward")
                             .resizable()
                             .frame(width: 40, height: 40)
+                            .brightness(-0.2)
                     }
                 }
                 Spacer()
@@ -43,19 +47,19 @@ struct ControlsView: View {
                 }
             }
         }
-      .background(Color.black)
-        .simultaneousGesture(
-            TapGesture()
-                .onEnded { _ in
-                    print("called", showControls)
-                    showControls = true
-                    startHideTimer()
-                }
-        )
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(showControls ? Color.black.opacity(0.2) : Color.black.opacity(0.001))
+        .onTapGesture {
+            showControls.toggle()
+            if showControls {
+                startHideTimer()
+            }
+        }
     }
     
     private func startHideTimer() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+        hideTimer?.invalidate()
+        hideTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
             showControls = false
         }
     }

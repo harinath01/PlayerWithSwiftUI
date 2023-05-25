@@ -6,13 +6,11 @@ struct VideoPlayer: View {
     var accessToken: String
     
     var body: some View {
-        VStack {
-            ZStack {
-                VideoPlaybackView(orgCode: orgCode, videoId: videoId, accessToken: accessToken)
-                ControlsView()
-            }
-            Spacer()
-        }.frame(height: 240, alignment: .topLeading)
+        ZStack {
+            VideoPlaybackView(orgCode: orgCode, videoId: videoId, accessToken: accessToken)
+            ControlsView()
+        }
+        .background(Color.black)
     }
 }
 
