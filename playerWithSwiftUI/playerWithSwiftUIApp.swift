@@ -20,7 +20,7 @@ struct main: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            VideoPlayer()
         }
     }
 }

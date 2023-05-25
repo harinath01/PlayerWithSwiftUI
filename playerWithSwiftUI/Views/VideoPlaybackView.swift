@@ -3,14 +3,13 @@ import SwiftUI
 import UIKit
 import AVKit
 
-class VideoPlayerUIView: UIView {
+class VideoPlaybackUIView: UIView {
     override static var layerClass: AnyClass { AVPlayerLayer.self }
     
     var player: AVPlayer? {
         get { playerLayer.player }
         set { playerLayer.player = newValue }
     }
-    
     private var playerLayer: AVPlayerLayer { layer as! AVPlayerLayer }
     private var orgCode: String!
     private var videoId: String!
@@ -32,27 +31,28 @@ class VideoPlayerUIView: UIView {
     private func configurePlayerWithVideo(){
         StreamsAPIClient.fetchVideo(orgCode: orgCode, videoId: videoId, accessToken: accessToken){ videoDetails, error in
             if let videoDetails = videoDetails {
-                self.setupPlayer(with: videoDetails.playbackURL)
+                self.player = AVPlayer(url: URL(string: videoDetails.playbackURL)!)
+                self.player?.play()
             } else if let error = error {
                 debugPrint(error.localizedDescription)
             }
         }
     }
-    
-    private func setupPlayer(with playbackURL: String!){
-        self.player = AVPlayer(url: URL(string: playbackURL)!)
-        self.player?.play()
-    }
 }
 
-struct VideoPlayer: UIViewRepresentable {
+
+struct VideoPlaybackView: UIViewRepresentable {
     var orgCode: String
     var videoId: String
     var accessToken: String
     
-    func makeUIView(context: Context) -> VideoPlayerUIView {
-        return VideoPlayerUIView(orgCode: orgCode, videoId: videoId, accessToken: accessToken)
+    func makeUIView(context: Context) -> VideoPlaybackUIView {
+        return VideoPlaybackUIView(
+            orgCode: orgCode,
+            videoId: videoId,
+            accessToken: accessToken
+        )
     }
     
-    func updateUIView(_ uiView: VideoPlayerUIView, context: Context) { }
+    func updateUIView(_ uiView: VideoPlaybackUIView, context: Context) { }
 }
