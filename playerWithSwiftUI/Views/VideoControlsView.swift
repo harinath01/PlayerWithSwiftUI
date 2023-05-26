@@ -3,6 +3,7 @@ import SwiftUI
 struct ControlsView: View {
     @State private var showControls = false
     @State private var hideTimer: Timer?
+    var controlsDelegate: PlayerControlDelegate?
     
     var body: some View {
         VStack() {
@@ -66,7 +67,7 @@ struct ControlsView: View {
     
     
     func playPauseTapped() {
-        print("called")
+        controlsDelegate?.pause()
     }
     
     func rewind(){
