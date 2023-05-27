@@ -2,7 +2,7 @@ import SwiftUI
 import AVKit
 
 struct VideoPlayer: View {
-    @StateObject private var viewModel: VideoPlayerViewModel
+    @StateObject var viewModel: VideoPlayerViewModel
     
     init(orgCode: String, videoId: String, accessToken: String) {
         _viewModel = StateObject(wrappedValue: VideoPlayerViewModel(
@@ -17,7 +17,10 @@ struct VideoPlayer: View {
             if let player = viewModel.player {
                 VideoPlaybackView(player: player)
             }
-            ControlsView(controlsDelegate: viewModel)
+            ControlsView(
+                playerStatus: viewModel.playerStatus,
+                controlsDelegate: viewModel
+            )
         }
         .background(Color.black)
     }

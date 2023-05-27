@@ -3,6 +3,8 @@ import SwiftUI
 struct ControlsView: View {
     @State private var showControls = false
     @State private var hideTimer: Timer?
+    
+    var playerStatus: PlayerStatus
     var controlsDelegate: PlayerControlDelegate?
     
     var body: some View {
@@ -25,10 +27,17 @@ struct ControlsView: View {
                             .brightness(-0.2)
                     }
                     Button(action: playPauseTapped) {
-                        Image("play")
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                            .brightness(-0.1)
+                        if self.playerStatus == .paused {
+                            Image("play")
+                                .resizable()
+                                .frame(width: 50, height: 50)
+                                .brightness(-0.1)
+                        } else {
+                            Image("pause")
+                                .resizable()
+                                .frame(width: 50, height: 50)
+                                .brightness(-0.1)
+                        }
                     }
                     Button(action: forward) {
                         Image("forward")
@@ -65,9 +74,13 @@ struct ControlsView: View {
         }
     }
     
-    
     func playPauseTapped() {
-        controlsDelegate?.pause()
+        if playerStatus == .paused{
+            controlsDelegate?.play()
+        } else {
+            controlsDelegate?.pause()
+            
+        }
     }
     
     func rewind(){
@@ -87,7 +100,7 @@ protocol PlayerControlDelegate {
 
 struct ContentView_Previews1: PreviewProvider {
     static var previews: some View {
-        ControlsView()
+        ControlsView(playerStatus: .playing)
             .background(Color.black)
     }
 }
