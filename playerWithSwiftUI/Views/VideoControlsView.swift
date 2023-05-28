@@ -116,17 +116,19 @@ struct ControlsView: View {
     }
     
     private func rewind() {
-        // Handle rewind functionality
+        controlsDelegate?.rewind()
     }
     
     private func forward() {
-        // Handle forward functionality
+        controlsDelegate?.forward()
     }
 }
 
 protocol PlayerControlDelegate {
     func pause()
     func play()
+    func forward()
+    func rewind()
     func goTo(seconds: Float64)
 }
 

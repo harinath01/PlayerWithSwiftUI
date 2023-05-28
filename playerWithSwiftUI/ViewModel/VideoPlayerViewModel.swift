@@ -81,6 +81,22 @@ extension VideoPlayerViewModel: PlayerControlDelegate {
         player.play()
     }
     
+    func forward() {
+        let seekTo = self.player.currentTimeInSeconds + 10
+        if seekTo > videoDuration{
+            return
+        }
+        goTo(seconds: seekTo)
+    }
+    
+    func rewind() {
+        var seekTo = self.player.currentTimeInSeconds - 10
+        if seekTo < 0 {
+            seekTo = 0
+        }
+        goTo(seconds: seekTo)
+    }
+    
     func goTo(seconds: Float64) {
         isSeeking = true
         currentTime = seconds
