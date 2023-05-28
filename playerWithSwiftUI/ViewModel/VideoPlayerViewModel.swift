@@ -5,6 +5,7 @@ class VideoPlayerViewModel: NSObject, ObservableObject {
     @Published var player: AVPlayer!
     @Published var playerStatus: PlayerStatus = .paused
     @Published var currentTime: Float64?
+    @Published var bufferedDuration: Float64?
     
     private let orgCode: String
     private let videoId: String
@@ -42,10 +43,10 @@ class VideoPlayerViewModel: NSObject, ObservableObject {
         let interval = CMTime(value: 1, timescale: CMTimeScale(NSEC_PER_SEC))
         timeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main) { [weak self] progressTime in
             guard let self = self else { return }
-            
             if !self.isSeeking {
                 self.currentTime = CMTimeGetSeconds(progressTime)
             }
+            self.bufferedDuration = self.player?.bufferedDuration()
         }
         
         player.addObserver(self, forKeyPath: "timeControlStatus", options: .new, context: nil)

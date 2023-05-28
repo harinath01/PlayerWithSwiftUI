@@ -6,6 +6,7 @@ struct ControlsView: View {
     
     var videoDuration: Float64
     var currentTime: Float64
+    var bufferedDuration: Float64
     var playerStatus: PlayerStatus
     var controlsDelegate: PlayerControlDelegate?
     
@@ -79,6 +80,7 @@ struct ControlsView: View {
                     
                     VideoSlider(
                         currentTime: currentTime,
+                        bufferedDuration: bufferedDuration,
                         videoDuration: videoDuration,
                         onSliderChange: { value in
                             controlsDelegate?.goTo(seconds: value)
@@ -134,6 +136,7 @@ struct ControlsView_Previews: PreviewProvider {
         ControlsView(
             videoDuration: 20.0,
             currentTime: 10.0,
+            bufferedDuration: 15.0,
             playerStatus: .playing)
             .background(Color.black)
     }

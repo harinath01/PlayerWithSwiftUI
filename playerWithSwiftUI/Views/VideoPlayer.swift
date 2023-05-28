@@ -19,6 +19,7 @@ struct VideoPlayer: View {
                 ControlsView(
                     videoDuration: viewModel.videoDuration,
                     currentTime: viewModel.currentTime ?? 0.0,
+                    bufferedDuration: viewModel.bufferedDuration ?? 0.0,
                     playerStatus: viewModel.playerStatus,
                     controlsDelegate: viewModel
                 )

@@ -103,7 +103,7 @@
 			children = (
 				03C9E67E2A224EDD00D2EA2F /* Utils */,
 				03CD1A7D2A21E62A00AC6EA2 /* Extenstions */,
-				03E3081D2A20E1EF004DE817 /* ViewModels */,
+				03E3081D2A20E1EF004DE817 /* ViewModel */,
 				0333932C2A1E0614001A6B64 /* Models */,
 				033393262A1E0392001A6B64 /* Network */,
 				033393212A1E00D6001A6B64 /* Views */,
@@ -132,12 +132,12 @@
 			path = Extenstions;
 			sourceTree = "<group>";
 		};
-		03E3081D2A20E1EF004DE817 /* ViewModels */ = {
+		03E3081D2A20E1EF004DE817 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				03E3081E2A20E213004DE817 /* VideoPlayerViewModel.swift */,
 			);
-			path = ViewModels;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
