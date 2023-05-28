@@ -16,11 +16,13 @@ struct VideoPlayer: View {
         ZStack {
             if let player = viewModel.player {
                 VideoPlaybackView(player: player)
+                ControlsView(
+                    videoDuration: viewModel.videoDuration,
+                    currentTime: viewModel.currentTime ?? 0.0,
+                    playerStatus: viewModel.playerStatus,
+                    controlsDelegate: viewModel
+                )
             }
-            ControlsView(
-                playerStatus: viewModel.playerStatus,
-                controlsDelegate: viewModel
-            )
         }
         .background(Color.black)
     }
