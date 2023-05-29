@@ -42,7 +42,7 @@ class VideoPlayerViewModel: NSObject, ObservableObject {
     
     private func addObservers(){
         addPlayerTimeObserver()
-        addPlayerTimeObserver()
+        addPlayerBufferingObservers()
         addPlayerStatusObserver()
     }
     
