@@ -24,10 +24,10 @@ class VideoPlayerViewModel: NSObject, ObservableObject {
         self.videoId = videoId
         self.accessToken = accessToken
         super.init()
-        self.setUpPlayer()
+        initializePlayer()
     }
     
-    private func setUpPlayer() {
+    private func initializePlayer() {
         StreamsAPIClient.fetchVideo(orgCode: orgCode, videoId: videoId, accessToken: accessToken) { [weak self] videoDetails, error in
             guard let self = self else { return }
             
@@ -40,8 +40,13 @@ class VideoPlayerViewModel: NSObject, ObservableObject {
         }
     }
     
-    private func addObservers() {
-        // Current time change observer
+    private func addObservers(){
+        addPlayerTimeObserver()
+        addPlayerTimeObserver()
+        addPlayerStatusObserver()
+    }
+    
+    private func addPlayerTimeObserver() {
         let interval = CMTime(value: 1, timescale: CMTimeScale(NSEC_PER_SEC))
         timeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main) { [weak self] progressTime in
             guard let self = self else { return }
@@ -50,20 +55,21 @@ class VideoPlayerViewModel: NSObject, ObservableObject {
             }
             self.bufferedDuration = self.player?.bufferedDuration()
         }
-        
-        // Player status change observer
-        player.addObserver(self, forKeyPath: "timeControlStatus", options: .new, context: nil)
-        
-        
-        // Player buffering observer
-        player?.currentItem?.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: .new, context: nil)
-        player?.currentItem?.addObserver(self, forKeyPath: "playbackBufferEmpty", options: .new, context: nil)
+    }
+    
+    private func addPlayerStatusObserver() {
+        player.addObserver(self, forKeyPath: #keyPath(AVPlayer.timeControlStatus), options: .new, context: nil)
+    }
+    
+    private func addPlayerBufferingObservers() {
+        player?.currentItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.isPlaybackLikelyToKeepUp), options: .new, context: nil)
+        player?.currentItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.isPlaybackBufferEmpty), options: .new, context: nil)
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        if let player = object as? AVPlayer, keyPath == "timeControlStatus" {
+        if let player = object as? AVPlayer {
             handlePlayerStatusChange(for: player)
-        } else if let playerItem = object as? AVPlayerItem {
+        } else if let playerItem = object as? AVPlayerItem, let keyPath = keyPath {
             handleBufferStatusChange(of: playerItem, keyPath: keyPath)
         }
     }
@@ -81,7 +87,7 @@ class VideoPlayerViewModel: NSObject, ObservableObject {
         }
     }
     
-    private func handleBufferStatusChange(of playerItem: AVPlayerItem, keyPath: String?){
+    private func handleBufferStatusChange(of playerItem: AVPlayerItem, keyPath: String) {
         switch keyPath {
         case #keyPath(AVPlayerItem.isPlaybackBufferEmpty):
             if playerItem.isPlaybackBufferEmpty {
