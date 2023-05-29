@@ -13,24 +13,32 @@ struct VideoPlayer: View {
     }
 
     var body: some View {
-        ZStack {
-            if let player = viewModel.player {
-                VideoPlaybackView(player: player)
-                ControlsView(
-                    videoDuration: viewModel.videoDuration,
-                    currentTime: viewModel.currentTime ?? 0.0,
-                    bufferedDuration: viewModel.bufferedDuration ?? 0.0,
-                    playerStatus: viewModel.playerStatus,
-                    controlsDelegate: viewModel
-                )
-            } else {
-                ProgressView()
-                    .scaleEffect(1.5)
-                    .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
+        GeometryReader { geometry in
+            ZStack {
+                if let player = viewModel.player {
+                    VideoPlaybackView(player: player)
+                    ControlsView(
+                        videoDuration: viewModel.videoDuration,
+                        currentTime: viewModel.currentTime ?? 0.0,
+                        bufferedDuration: viewModel.bufferedDuration ?? 0.0,
+                        playerStatus: viewModel.playerStatus,
+                        isFullScreen: viewModel.isFullScreen,
+                        controlsDelegate: viewModel
+                    )
+                } else {
+                    ProgressView()
+                        .scaleEffect(1.5, anchor: .center)
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
+                }
             }
+            .padding(viewModel.isFullScreen ? 18 : 0)
+            .padding(.bottom, viewModel.isFullScreen ? 26 : 0)
+            .frame(width: viewModel.isFullScreen ? UIScreen.main.bounds.width : geometry.size.width,
+                   height: viewModel.isFullScreen ? UIScreen.main.bounds.height : geometry.size.height)
+            .background(Color.black)
+            .edgesIgnoringSafeArea(viewModel.isFullScreen ? .all : [])
+            .statusBarHidden(viewModel.isFullScreen)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black)
     }
 }
 

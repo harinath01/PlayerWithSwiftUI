@@ -8,6 +8,7 @@ struct ControlsView: View {
     var currentTime: Float64
     var bufferedDuration: Float64
     var playerStatus: PlayerStatus
+    var isFullScreen: Bool
     var controlsDelegate: PlayerControlDelegate?
     
     var body: some View {
@@ -74,8 +75,8 @@ struct ControlsView: View {
                         
                         Spacer()
                         
-                        Button(action: rewind) {
-                            Image("maximize")
+                        Button(action: toggleFullscreen) {
+                            Image(isFullScreen ? "minimize": "maximize")
                                 .resizable()
                                 .frame(width: 16, height: 16)
                         }
@@ -126,6 +127,14 @@ struct ControlsView: View {
     private func forward() {
         controlsDelegate?.forward()
     }
+    
+    private func toggleFullscreen(){
+        if isFullScreen {
+            controlsDelegate?.exitFullScreen()
+        } else {
+            controlsDelegate?.enterFullScreen()
+        }
+    }
 }
 
 protocol PlayerControlDelegate {
@@ -133,6 +142,8 @@ protocol PlayerControlDelegate {
     func play()
     func forward()
     func rewind()
+    func enterFullScreen()
+    func exitFullScreen()
     func goTo(seconds: Float64)
 }
 
@@ -143,7 +154,9 @@ struct ControlsView_Previews: PreviewProvider {
             videoDuration: 20.0,
             currentTime: 10.0,
             bufferedDuration: 15.0,
-            playerStatus: .playing)
+            playerStatus: .playing,
+            isFullScreen: true
+        )
             .background(Color.black)
     }
 }

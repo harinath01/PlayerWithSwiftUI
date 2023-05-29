@@ -6,6 +6,7 @@ class VideoPlayerViewModel: NSObject, ObservableObject {
     @Published var playerStatus: PlayerStatus = .paused
     @Published var currentTime: Float64?
     @Published var bufferedDuration: Float64?
+    @Published var isFullScreen = false
     
     private let orgCode: String
     private let videoId: String
@@ -129,6 +130,16 @@ extension VideoPlayerViewModel: PlayerControlDelegate {
             guard let self = self else { return }
             self.isSeeking = false
         }
+    }
+    
+    func enterFullScreen() {
+        UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+        isFullScreen = true
+    }
+    
+    func exitFullScreen() {
+        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+        isFullScreen = false
     }
 }
 
