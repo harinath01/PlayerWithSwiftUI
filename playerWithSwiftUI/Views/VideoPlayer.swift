@@ -23,8 +23,13 @@ struct VideoPlayer: View {
                     playerStatus: viewModel.playerStatus,
                     controlsDelegate: viewModel
                 )
+            } else {
+                ProgressView()
+                    .scaleEffect(1.5)
+                    .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black)
     }
 }

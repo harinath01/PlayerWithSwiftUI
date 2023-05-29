@@ -32,14 +32,18 @@ struct ControlsView: View {
                             .frame(width: 40, height: 40)
                             .brightness(-0.2)
                     }
-                    
-                    Button(action: playPauseTapped) {
-                        Image(playerStatus == .paused ? "play" : "pause")
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                            .brightness(-0.1)
+                    if (playerStatus == .buffering){
+                        ProgressView()
+                            .scaleEffect(1.5)
+                            .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
+                    } else {
+                        Button(action: playPauseTapped) {
+                            Image(playerStatus == .paused ? "play" : "pause")
+                                .resizable()
+                                .frame(width: 50, height: 50)
+                                .brightness(-0.1)
+                        }
                     }
-                    
                     Button(action: forward) {
                         Image("forward")
                             .resizable()
