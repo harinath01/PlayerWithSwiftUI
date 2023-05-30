@@ -26,13 +26,15 @@ struct ControlsView: View {
                 
                 Spacer()
                 
-                HStack(spacing: 80) {
+                HStack() {
+                    Spacer()
                     Button(action: rewind) {
                         Image("rewind")
                             .resizable()
                             .frame(width: 40, height: 40)
-                            .brightness(-0.2)
+                            .brightness(-0.1)
                     }
+                    Spacer()
                     if (playerStatus == .buffering){
                         ProgressView()
                             .scaleEffect(1.5)
@@ -45,12 +47,14 @@ struct ControlsView: View {
                                 .brightness(-0.1)
                         }
                     }
+                    Spacer()
                     Button(action: forward) {
                         Image("forward")
                             .resizable()
                             .frame(width: 40, height: 40)
-                            .brightness(-0.2)
+                            .brightness(-0.1)
                     }
+                    Spacer()
                 }
                 
                 Spacer()
@@ -64,11 +68,11 @@ struct ControlsView: View {
                                 .font(.subheadline)
                             
                             Text("/")
-                                .foregroundColor(Color.gray)
+                                .foregroundColor(Color.white.opacity(0.6))
                                 .fontWeight(.bold)
                             
                             Text(timeStringFromSeconds(videoDuration))
-                                .foregroundColor(Color.gray)
+                                .foregroundColor(Color.white.opacity(0.6))
                                 .fontWeight(.bold)
                                 .font(.subheadline)
                         }

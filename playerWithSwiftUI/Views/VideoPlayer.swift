@@ -31,8 +31,7 @@ struct VideoPlayer: View {
                         .progressViewStyle(CircularProgressViewStyle(tint: Color.white))
                 }
             }
-            .padding(viewModel.isFullScreen ? 18 : 0)
-            .padding(.bottom, viewModel.isFullScreen ? 26 : 0)
+            .padding(viewModel.isFullScreen ? EdgeInsets(top: 10, leading: 10, bottom: 32, trailing: 10) : EdgeInsets())
             .frame(width: viewModel.isFullScreen ? UIScreen.main.bounds.width : geometry.size.width,
                    height: viewModel.isFullScreen ? UIScreen.main.bounds.height : geometry.size.height)
             .background(Color.black)
